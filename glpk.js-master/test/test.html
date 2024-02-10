@@ -1,0 +1,92 @@
+<html>
+<head>
+<script src="../dist/glpk.min.js"></script>
+</head>
+<body>
+    <textarea id="source" cols="50" rows="10">
+
+Minimize 
+obj: +999999999 x1 +347.752 x2 +269.753 x3 +180.068 x4 +393.438 x5 +347.752 x6 +999999999 x7 +293.638 x8 +310.247 x9 +566.128 x10 +269.753 x11 +293.638 x12 +999999999 x13 +454.69 x14 +646.011 x15 +180.068 x16 +310.247 x17 +454.69 x18 +999999999 x19 +265.833 x20 +393.438 x21 +566.128 x22 +646.011 x23 +265.833 x24 +999999999 x25
+
+Subject To
+ogr1_0: +x1 +x2 +x3 +x4 +x5 = 1
+ogr1_1: +x6 +x7 +x8 +x9 +x10 = 1
+ogr1_2: +x11 +x12 +x13 +x14 +x15 = 1
+ogr1_3: +x16 +x17 +x18 +x19 +x20 = 1
+ogr1_4: +x21 +x22 +x23 +x24 +x25 = 1
+ogr2_0: +x1 +x6 +x11 +x16 +x21 = 1
+ogr2_1: +x2 +x7 +x12 +x17 +x22 = 1
+ogr2_2: +x3 +x8 +x13 +x18 +x23 = 1
+ogr2_3: +x4 +x9 +x14 +x19 +x24 = 1
+ogr2_4: +x5 +x10 +x15 +x20 +x25 = 1
+
+Bounds
+x1 <= 1
+x2 <= 1
+x3 <= 1
+x4 <= 1
+x5 <= 1
+x6 <= 1
+x7 <= 1
+x8 <= 1
+x9 <= 1
+x10 <= 1
+x11 <= 1
+x12 <= 1
+x13 <= 1
+x14 <= 1
+x15 <= 1
+x16 <= 1
+x17 <= 1
+x18 <= 1
+x19 <= 1
+x20 <= 1
+x21 <= 1
+x22 <= 1
+x23 <= 1
+x24 <= 1
+x25 <= 1
+
+General
+x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 x21 x22 x23 x24 x25 
+
+End
+
+    </textarea><br>
+    <input type="submit" onclick="run()" />
+    <pre id="log"/>
+
+    <script>
+        var start;
+	var logNode = document.getElementById("log");
+        var log = glp_print_func = function(value){
+            var now = new Date();
+	        var d = (now.getTime() - start.getTime()) / 1000;
+	        logNode.appendChild(document.createTextNode(value + "\n"));
+            if (d > 60) throw new Error("timeout");
+	        console.log(value);
+        };
+        function run(){
+
+            var lp = glp_create_prob();
+            glp_read_lp_from_string(lp, null, document.getElementById("source").value);
+            
+            glp_scale_prob(lp, GLP_SF_AUTO);
+
+            var smcp = new SMCP({presolve: GLP_ON});
+            glp_simplex(lp, smcp);
+
+            var iocp = new IOCP({presolve: GLP_ON});
+            glp_intopt(lp, iocp);
+
+            console.log("obj: " + glp_mip_obj_val(lp));
+            for(var i = 1; i <= glp_get_num_cols(lp); i++){
+                console.log(glp_get_col_name(lp, i)  + " = " + glp_mip_col_val(lp, i));
+            }
+        }
+    </script>
+
+
+</body>
+</html>
+

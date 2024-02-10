@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <title>Route Planning Tool MVP</title>
+    <script  async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWEv7y1GgixJ_JXjnLKtaI411Ok5UMJ60&callback=initAutocomplete&libraries=places&v=weekly" async defer></script> <!-- Google API Link: https://console.developers.google.com/ -->
+    <script type="text/javascript" src="./glpk.js-master/dist/glpk.min.js"></script> <!-- Solver Link: https://github.com/hgourvest/glpk.js -->
+    <link rel="stylesheet" type="text/css" href="./main.css" />
+    <script src="./main.js"></script>
+  </head>
+
+  <body>
+    <h1>Route Planning Tool MVP</h1>
+
+    <div class="grid">
+
+      <div class="search-items"> 
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">  
+        <button id="send-data"> Add place</button> 
+      </div>
+
+      <div id="map"></div> 
+
+      <div class="table-items"> 
+        <p id="table-name">Added places</p> 
+        <table  id="table-data">   </table> 
+        <button id="calculate-btn">Calculate</button> 
+        <p id="totalD"> Total Distance: <span id="total"></span></p> 
+        <div id="right-panel"> 
+        </div>
+      </div>
+
+    </div>
+    
+  </body>
+
+</html>
