@@ -107,27 +107,32 @@ function initAutocomplete() {
 
   document.getElementById("send-data").addEventListener('click', function () {
     if (input.value != "" && table.includes(input.value) == false) {
-
+  
       table.push(input.value);
-
+  
       const tableBody = document.getElementById('table-data');
       let dataHtml = '';
       for (let element of table) {
-        dataHtml += '<tr id="' + element + '" > <td class="elemenet"> ' + element + ' </td> <td class="btn-delete" id="' + element + '" > <button class="btn-item"> ' + "Delete" + ' </button> </td> </tr>'
+        dataHtml += '<tr id="' + element + '" > <td class="element"> ' + element + ' </td> <td class="btn-complete" id="' + element + '" > <button class="btn-item" style="background-color: red;"> ' + "Not Completed" + ' </button> </td> </tr>'
       }
       tableBody.innerHTML = dataHtml;
-
-      document.querySelectorAll(".btn-delete").forEach(item => {
+  
+      document.querySelectorAll(".btn-complete").forEach(item => {
         item.addEventListener('click', event => {
-          document.getElementById(item.id).remove();
-          const valuesToRemove = [item.id];
-          table = table.filter(table => !valuesToRemove.includes(table));
-        })
+          const button = event.target;
+          if (button.style.backgroundColor === "red") {
+            button.style.backgroundColor = "green";
+            button.innerText = "Completed";
+          } else {
+            button.style.backgroundColor = "red";
+            button.innerText = "Not Completed";
+          }
+        });
       });
-
+  
     }
     savePlaceData(place, false);
-
+  
   });
 
 
