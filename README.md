@@ -23,4 +23,4 @@ node main.js
 Open <code>mapa.html</code>, find selected places using ***Search Box*** and add them to table and use ***Calculate*** to get score. The first added point is the place where we start and end the route calculation.
 
 
-(img/1.png)
+<img src="https://github.com/udittripathi/route-planning/blob/main/img/1.png" width="600" height="500"
