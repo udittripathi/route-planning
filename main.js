@@ -1,15 +1,31 @@
-const mysql = require('mysql');
+const sqlite3 = require('sqlite3').verbose();
+const express = require('express');
+const cors = require('cors');
+const db = new sqlite3.Database('route.db');
+const app = express();
+app.use(cors());
+app.use(express.json());
+const port = 7859;
+db.serialize(() => {
+  db.run("CREATE TABLE IF NOT EXISTS places (name TEXT, latitude REAL, longitude REAL, completion_status INTEGER)");
+});
 
-// MySQL database connection configuration
-const dbConfig = {
-  host: 'localhost',
-  user: 'your_username',
-  password: 'your_password',
-  database: 'your_database_name'
-};
+function savePlaceData(place, completionStatus) {
+  db.serialize(() => {
+    // Insert place data into the database
+    db.run("INSERT INTO places (name, latitude, longitude, completion_status) VALUES (?, ?, ?, ?)", [place.name, place.geometry.location.lat(), place.geometry.location.lng(), completionStatus], (err) => {
+      if (err) {
+        console.error('Error saving place data: ' + err.message);
+      } else {
+        console.log('Place data saved successfully.');
+      }
+    });
+  });
+}
 
-// Create a MySQL pool
-const pool = mysql.createPool(dbConfig);
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
+});
 
 function initAutocomplete() {
 
@@ -78,32 +94,6 @@ function initAutocomplete() {
   });
 
   var table = [];
-
-  function savePlaceData(place, completionStatus) {
-    pool.getConnection((err, connection) => {
-      if (err) {
-        console.error('Error connecting to database: ' + err.stack);
-        return;
-      }
-
-      // Prepare SQL query
-      const query = 'INSERT INTO places (name, latitude, longitude, completion_status) VALUES (?, ?, ?, ?)';
-      const values = [place.name, place.geometry.location.lat(), place.geometry.location.lng(), completionStatus];
-
-      // Execute the query
-      connection.query(query, values, (error, results, fields) => {
-        // Release the connection
-        connection.release();
-
-        if (error) {
-          console.error('Error saving place data: ' + error.message);
-          return;
-        }
-
-        console.log('Place data saved successfully.');
-      });
-    });
-  }
 
   document.getElementById("send-data").addEventListener('click', function () {
     if (input.value != "" && table.includes(input.value) == false) {

@@ -1,0 +1,16 @@
+{
+  "name": "route-planning",
+  "version": "1.0.0",
+  "description": "Project is created with:\r * JavaScript\r * CSS\r * HTML\r * GLPK (GNU Linear Programming Kit) \r * Google Map API:\r   * Places API\r   * Directions API\r   * Maps JavaScript API",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7"
+  }
+}
