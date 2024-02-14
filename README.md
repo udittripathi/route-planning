@@ -6,6 +6,7 @@ Project is created with:
 * JavaScript
 * CSS
 * HTML
+* SQLite
 * GLPK (GNU Linear Programming Kit) 
 * Google Map API:
   * Places API
